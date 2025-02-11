@@ -257,7 +257,7 @@
           progressText.className = "progress-text";
           progressText.innerText =
             (prediction[i].probability * 100).toFixed(2) + "%";
-          progressText.style.color = progressBar.style.backgroundColor; 
+          progressText.style.color = '#fff'; 
 
           progressContainer.appendChild(progressBar);
           progressContainer.appendChild(progressText);
@@ -266,14 +266,14 @@
           // Update the position of the progress text
           progressBar.addEventListener("input", function () {
             progressText.style.left = (progressBar.value * 100) + "%";
-            progressText.style.marginLeft = "2rem"; 
-            progressText.style.color = progressBar.style.backgroundColor; 
+            progressText.style.marginLeft = "-2.25rem"; 
+            progressText.style.color = '#fff'; 
             progressText.style.transform = `translate(-50%, -50%)`; 
           });
           
           progressText.style.left = (progressBar.value * 100) + "%";
           progressText.style.transform = `translate(-50%, -50%)`; 
-          progressText.style.marginLeft = "2rem"; 
+          progressText.style.marginLeft = "-2.25rem"; 
         }
       }
     </script>
