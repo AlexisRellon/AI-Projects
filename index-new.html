@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recognito</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+      rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- add favicon -->
+    <link rel="icon" href="/campuraai-02.png" type="image/x-icon" />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        scroll-snap-type: y mandatory;
+      }
+
+    .RubiksCube {
+      color: #f87171; /* Tailwind Red 400 */
+    }
+
+    .Calculator {
+      color: #fbbf24; /* Tailwind Yellow 400 */
+    }
+
+    .PowerBank {
+      color: #34d399; /* Tailwind Green 400 */
+    }
+
+    .Smartphone {
+      color: #60a5fa; /* Tailwind Blue 400 */
+    }
+
+    .Person {
+      color: #a78bfa; /* Tailwind Purple 400 */
+    }
+  
+      progress[value] {
+        width: 100%;
+        height: 2.5rem;
+        appearance: none;
+        position: relative;
+      }
+  
+      progress::-webkit-progress-bar {
+        background-color: #ffffff;
+        border: none;
+        border-radius: 5px;
+      }
+  
+      progress::-webkit-progress-value {
+        background-color: currentColor;
+        border-radius: 5px;
+      }
+  
+      .progress-text {
+        position: absolute;
+        top: -25px; /* Move text above the progress bar */
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-weight: bold;
+      }
+  
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 4px solid #3498db;
+        width: 40px;
+        height: 40px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      section {
+        scroll-snap-align: start;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      .min-h-screen {
+        scroll-snap-align: start;
+      }
+
+      .arrow {
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .image-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        max-width: 275px;
+        height: 500px;
+        transition: all 0.3s ease;
+      }
+
+      .image-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease, filter 0.3s ease;
+      }
+
+      .image-container:hover img {
+        transform: scale(1.2);
+      }
+
+      .image-container h3 {
+        position: absolute;
+        bottom: -50px;
+        left: 10px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: bottom 0.3s ease;
+      }
+
+      .image-container:hover h3 {
+        bottom: 10px;
+      }
+
+      .image-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .image-container:hover::before {
+        opacity: 1;
+      }
+
+      .grid-center {
+        display: flex;
+        justify-content: center;
+      }
+
+      .creative-layout {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .creative-layout .image-container {
+        flex: 1 1 calc(25% - 10px);
+      }
+
+      .creative-layout .image-container:hover {
+        flex: 1 1 calc(30% - 10px);
+      }
+
+      .creative-layout .image-container:not(:hover) {
+        flex: 1 1 calc(20% - 10px);
+        filter: brightness(0.7);
+      }
+
+      .progress-container {
+        position: relative;
+        width: 100%;
+        background-color: #2d3748;
+        border-radius: 5px;
+        height: 2.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .progress-bar {
+        height: 100%;
+        border-radius: 5px;
+        transition: width 0.3s ease;
+        overflow: hidden; /* Add this line to clip the progress value */
+      }
+
+      .progress-text {
+        position: absolute;
+        top: -25px; /* Move text above the progress bar */
+        left: 50%;
+        transform: translateX(-50%);
+        color: #2d3748;
+        font-weight: bold;
+      }
+
+      .label-text {
+        position: absolute;
+        /* top: -25px; Move text above the progress bar */
+        left: 50%;
+        transform: translateX(-50%);
+        color: #2d3748;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-gray-300">
+    <div class="min-h-screen flex items-center justify-center">
+      <div class="flex flex-row w-10/12 gap-5">
+        <!-- Section -->
+        <div
+          class="p-5 h-96 w-full md:w-5/12 bg-gray-800 flex flex-col gap-3 rounded-lg"
+          data-aos="fade-right">
+          <h1 class="text-3xl text-white font-bold">
+            Image Recognition: RECOGNITO
+          </h1>
+          <p class="text-lg text-gray-400 flex-grow">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+            Praesentium perspiciatis, quis iste excepturi maiores eligendi,
+            cumque dignissimos suscipit tempore delectus eaque, temporibus culpa
+            atque enim quo blanditiis optio distinctio quam!
+          </p>
+          <div class="flex gap-3">
+            <button
+              type="button"
+              class="bg-blue-500 text-white px-6 py-3 rounded-full font-bold hover:bg-blue-700 transition duration-300 ease-in-out"
+              onclick="startRecognition()">
+              Start Recognition
+            </button>
+          </div>
+        </div>
+        <div
+          class="w-full md:w-7/12 flex justify-center items-center"
+          data-aos="zoom-in"
+          data-aos-delay="100">
+          <img
+            src="/campuraai-02.png"
+            alt="Image"
+            class="w-96 object-cover rounded-lg"
+            id="image-3d" />
+        </div>
+      </div>
+      <!-- Add Down Arrow icon -->
+      <a class="arrow absolute bottom-5" href="#features">
+        <div class="flex flex-col gap-2 items-center">
+          <p class="uppercase">Scroll Down</p>
+          <i class="fas fa-chevron-down text-3xl text-white"></i>
+        </div>
+      </a>
+    </div>
+    <div class="h-40"></div>
+    <!-- Features Section -->
+    <section id="features" class="py-20">
+      <div class="container mx-auto">
+        <h2
+          class="text-3xl font-bold mb-8 text-center text-white"
+          data-aos="fade-up">
+          Features
+        </h2>
+        <div class="flex flex-wrap gap-5 justify-center">
+          <div
+            class="p-5 w-full md:w-5/12 bg-gray-800 flex flex-col gap-3 rounded-lg"
+            data-aos="fade-up"
+            data-aos-delay="100">
+            <i class="fas fa-video text-4xl mb-4 text-blue-500"></i>
+            <h3 class="text-2xl font-bold text-white mb-4">
+              Real-Time Recognition
+            </h3>
+            <p class="text-lg text-gray-400">
+              Recognize objects in real-time using your webcam.
+            </p>
+          </div>
+          <div
+            class="p-5 w-full md:w-5/12 bg-gray-800 flex flex-col gap-3 rounded-lg"
+            data-aos="fade-up"
+            data-aos-delay="200">
+            <i class="fas fa-bullseye text-4xl mb-4 text-blue-500"></i>
+            <h3 class="text-2xl font-bold text-white mb-4">High Accuracy</h3>
+            <p class="text-lg text-gray-400">
+              Utilizes advanced AI models for high accuracy.
+            </p>
+          </div>
+          <div
+            class="p-5 w-full md:w-5/12 bg-gray-800 flex flex-col gap-3 rounded-lg"
+            data-aos="fade-up"
+            data-aos-delay="300">
+            <i class="fas fa-user-friends text-4xl mb-4 text-blue-500"></i>
+            <h3 class="text-2xl font-bold text-white mb-4">Easy to Use</h3>
+            <p class="text-lg text-gray-400">
+              Simple and intuitive interface for everyone.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="h-40"></div>
+
+    <!-- What can it detect section -->
+    <section id="detect" class="py-20">
+      <div class="container mx-auto">
+        <h2
+          class="text-3xl font-bold mb-8 text-center text-white"
+          data-aos="fade-up"
+          data-aos-anchor-placement="center-center">
+          What Can It Detect
+        </h2>
+        <div class="creative-layout">
+          <div
+            class="image-container rounded-md"
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-center"
+            data-aos-delay="100">
+            <img
+              src="https://images.pexels.com/photos/1500610/pexels-photo-1500610.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Rubik's Cube"
+              class="w-full object-cover" />
+            <h3 class="text-xl font-bold absolute">Rubik's Cube</h3>
+          </div>
+          <div
+            class="image-container rounded-md"
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-center"
+            data-aos-delay="200">
+            <img
+              src="https://images.pexels.com/photos/220301/pexels-photo-220301.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Scientific Calculator"
+              class="w-full object-cover" />
+            <h3 class="text-xl font-bold absolute">Scientific Calculator</h3>
+          </div>
+          <div
+            class="image-container rounded-md"
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-center"
+            data-aos-delay="300">
+            <img
+              src="https://images.pexels.com/photos/11031423/pexels-photo-11031423.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Power Bank"
+              class="w-full object-cover" />
+            <h3 class="text-xl font-bold absolute">Power Bank</h3>
+          </div>
+          <div
+            class="image-container rounded-md"
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-center"
+            data-aos-delay="400">
+            <img
+              src="https://images.pexels.com/photos/1884777/pexels-photo-1884777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Smartphone"
+              class="w-full object-cover" />
+            <h3 class="text-xl font-bold absolute">Smartphone</h3>
+          </div>
+          <div
+            class="image-container rounded-md"
+            data-aos="fade-up"
+            data-aos-anchor-placement="top-center"
+            data-aos-delay="500">
+            <img
+              src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              alt="Person"
+              class="w-full object-cover" />
+            <h3 class="text-xl font-bold absolute">Person</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="h-40"></div>
+
+    <!-- Main content section -->
+    <section id="main-content" class="py-20">
+      <div class="container mx-auto">
+        <h2 class="text-3xl font-bold mb-8 text-center text-white" data-aos="fade-up">
+          Main Content
+        </h2>
+        <div class="flex flex-wrap gap-5 justify-center">
+          <div class="p-5 w-full md:w-5/12 bg-gray-800 flex flex-col gap-3 rounded-lg" data-aos="fade-up" data-aos-delay="100">
+            <div id="webcam-container" class="flex justify-center items-center">
+              <div id="loader" class="loader"></div>
+              <p id="loader-text" class="ml-5">Waiting for the Webcam</p>
+            </div>
+          </div>
+          <div class="p-5 w-full md:w-5/12 flex flex-col justify-center bg-gray-800 flex flex-col gap-3 rounded-lg" data-aos="fade-up" data-aos-delay="200">
+            <div id="label-container" class="flex flex-col justify-center gap-5"></div>
+          </div>
+        </div>
+        <div class="flex justify-center" data-aos="fade-up" data-aos-delay="300">
+            <button
+              type="button"
+              id="close-button"
+              class="bg-red-500 text-white px-6 py-3 rounded-full font-bold hover:bg-red-700 transition duration-300 ease-in-out mt-5 hidden"
+              onclick="closeWebcam()">
+              Close
+            </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="h-40"></div>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white py-10">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2025 Recognito (Alexis John Rellon) . All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        AOS.init();
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script type="text/javascript">
+      // More API functions here:
+      // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+      // the link to your model provided by Teachable Machine export panel
+      const URL = "https://teachablemachine.withgoogle.com/models/7X6T8rUQg/";
+
+      let model, webcam, labelContainer, maxPredictions;
+
+      function startRecognition() {
+        document.getElementById('main-content').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('close-button').classList.remove('hidden');
+        init();
+      }
+
+      // Load the image model and setup the webcam
+      async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        const textLabels = [
+          "RubiksCube",
+          "Calculator",
+          "PowerBank",
+          "Smartphone",
+          "Person",
+        ];
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // or files from your local hard drive
+        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(500, 500, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        document.getElementById('loader').style.display = 'none'; // Hide loader
+        document.getElementById('loader-text').style.display = 'none'; // Hide loader text
+        window.requestAnimationFrame(loop);
+
+        // append elements to the DOM
+        document
+          .getElementById("webcam-container")
+          .appendChild(webcam.canvas);
+
+        const colors = [
+            "#f87171", /* Tailwind Red 400 */
+            "#fbbf24", /* Tailwind Yellow 400 */
+            "#34d399", /* Tailwind Green 400 */
+            "#60a5fa", /* Tailwind Blue 400 */
+            "#a78bfa"  /* Tailwind Purple 400 */
+        ];
+
+        for (let i = 0; i < maxPredictions; i++) {
+          const progressContainer = document.createElement("div");
+          progressContainer.className = "progress-container";
+
+          const progressBar = document.createElement("div");
+          progressBar.className = "progress-bar";
+          progressBar.style.backgroundColor = colors[i];
+          progressBar.style.width = "0%";
+
+          const labelText = document.createElement("span");
+          labelText.className = "label-text";
+          labelText.innerText = textLabels[i];
+
+          progressContainer.appendChild(labelText);
+          progressContainer.appendChild(progressBar);
+          document.getElementById("label-container").appendChild(progressContainer);
+        }
+      }
+
+      async function loop() {
+        webcam.update();
+        await predict();
+        window.requestAnimationFrame(loop);
+      }
+
+      async function predict() {
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+          const progressBar = document.getElementById("label-container").childNodes[i].childNodes[1];
+          const classPrediction = Math.round(prediction[i].probability * 100) + "%"; // Round to whole number
+          progressBar.style.width = classPrediction;
+        }
+      }
+
+      function closeWebcam() {
+        if (webcam) {
+          webcam.stop();
+          webcam.canvas.remove();
+        }
+        const labelContainer = document.getElementById('label-container');
+        while (labelContainer.firstChild) {
+          labelContainer.removeChild(labelContainer.firstChild);
+        }
+        document.getElementById('close-button').classList.add('hidden');
+      }
+    </script>
+  </body>
+</html>
